@@ -1,2 +1,48 @@
 #app {
 }
+
+.header-component {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.header-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: "Oswald";
+  font-weight: 700;
+  padding: 1rem;
+  padding-left: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.header-icon {
+  width: 150px;
+  padding-right: 1rem;
+}
+
+.header-scoreboard {
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+}
+
+.score {
+  font-family: "Oswald";
+}
+
+@media screen and (min-width: 600px) {
+  .header-heading {
+    font-size: 2rem;
+    padding-left: 1rem;
+  }
+  .header-icon {
+    width: 250px;
+  }
+}
