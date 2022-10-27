@@ -14,16 +14,31 @@ export default function Game() {
     setLostState(true);
   }
 
-  function checkLevelComplete(e) {}
+  function checkClickedAlready(key) {
+    let alreadyClicked = false;
+    for (let button of gameButtons) {
+      if (button.key === key) {
+        alreadyClicked = button.clicked ? true : false;
+      }
+    }
+    return alreadyClicked;
+  }
+
+  function checkLevelComplete() {}
 
   function validateChoice(key) {
-    setGameButtons(
-      gameButtons.map((gameButton) => {
-        return gameButton.key === key
-          ? { ...gameButton, clicked: true }
-          : { ...gameButton };
-      })
-    );
+    if (checkClickedAlready(key)) {
+      handleLostGame();
+    } else {
+      setGameButtons(
+        gameButtons.map((gameButton) => {
+          return gameButton.key === key
+            ? { ...gameButton, clicked: true }
+            : { ...gameButton };
+        })
+      );
+      checkLevelComplete();
+    }
   }
 
   function randomIntFromInterval(min, max) {
