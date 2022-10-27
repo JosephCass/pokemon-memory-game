@@ -67,7 +67,6 @@
 .game-logic {
   display: flex;
   justify-content: center;
-  background-color: green;
   width: 100%;
 }
 
@@ -92,6 +91,29 @@
 .pokemon-button-img {
   min-width: 115px;
   max-width: 215px;
+}
+
+.play-again-btn {
+  background-color: red;
+  padding: 1rem;
+  font-family: "Oswald";
+  font-weight: 700;
+  border-radius: 4px;
+  margin-top: 5rem;
+  font-size: 2rem;
+  /* animation: blinker 1s step-end infinite; */
+  animation: blinker 1.5s ease-in infinite;
+  cursor: pointer;
+}
+
+.play-again-btn:hover {
+  background-color: rgb(20, 226, 20);
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 10%;
+  }
 }
 
 @media screen and (min-width: 600px) {
