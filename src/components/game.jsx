@@ -13,6 +13,15 @@ export default function Game() {
     setLostState(true);
   }
 
+  function shuffleArray(array) {
+    let copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
   function checkClickedAlready(key) {
     let alreadyClicked = false;
     for (let button of gameButtons) {
@@ -35,7 +44,9 @@ export default function Game() {
     }
   }
 
-  function changeButtonOrder() {}
+  function changeButtonOrder() {
+    setGameButtons(shuffleArray(gameButtons));
+  }
 
   function validateChoice(key) {
     let gameBtnArr = [];
