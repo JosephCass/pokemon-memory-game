@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Game() {
   let [level, setLevel] = useState(0);
@@ -24,9 +23,22 @@ export default function Game() {
     return alreadyClicked;
   }
 
-  function checkLevelComplete() {}
+  function checkLevelComplete() {
+    let allBtnsClicked = true;
+    for (let button of gameButtons) {
+      if (!button.clicked) {
+        allBtnsClicked = false;
+      }
+    }
+    if (allBtnsClicked) {
+      setLevel(level + 1);
+    }
+  }
+
+  function changeButtonOrder() {}
 
   function validateChoice(key) {
+    let gameBtnArr = [];
     if (checkClickedAlready(key)) {
       handleLostGame();
     } else {
@@ -37,7 +49,7 @@ export default function Game() {
             : { ...gameButton };
         })
       );
-      checkLevelComplete();
+      console.log(gameButtons);
     }
   }
 
@@ -45,14 +57,18 @@ export default function Game() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  const initialButtons = [];
-  for (let x = 0; x < levelDifficulty[level]; x++) {
-    const randNum = randomIntFromInterval(1, 905);
-    //Implement a check to see if the random number was already choosen before pushng, rare case
-    initialButtons.push({ clicked: false, key: randNum });
+  //   const initialButtons = [];
+  function renderLevel() {
+    const initialButtons = [];
+    for (let x = 0; x < levelDifficulty[level]; x++) {
+      const randNum = randomIntFromInterval(1, 905);
+      //Implement a check to see if the random number was already choosen before pushng, rare case
+      initialButtons.push({ clicked: false, key: randNum });
+    }
+    return initialButtons;
   }
 
-  const [gameButtons, setGameButtons] = useState(initialButtons);
+  const [gameButtons, setGameButtons] = useState(renderLevel());
 
   function renderGameBtns() {
     return gameButtons.map((currBtn) => {
@@ -107,6 +123,13 @@ export default function Game() {
       }
     });
   }
+  useEffect(() => {
+    checkLevelComplete();
+  }, [gameButtons]);
+
+  useEffect(() => {
+    setGameButtons(renderLevel());
+  }, [level]);
 
   return (
     <div className="game-container">
