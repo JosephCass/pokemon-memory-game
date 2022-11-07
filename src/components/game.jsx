@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-export default function Game() {
+export default function Game(props) {
   let [level, setLevel] = useState(0);
 
   let [lostGame, setLostState] = useState(false);
@@ -45,9 +45,11 @@ export default function Game() {
   }
 
   function validateChoice(key) {
+    let clickedAlready = checkClickedAlready(key);
     let gameBtnArr = [];
-    if (checkClickedAlready(key)) {
+    if (clickedAlready) {
       handleLostGame();
+      props.updateCurrentScore(clickedAlready);
     } else {
       function updateButtons() {
         let newArr = gameButtons.map((gameButton) => {
@@ -59,6 +61,7 @@ export default function Game() {
         setGameButtons(shuffleArray(newArr));
       }
       updateButtons();
+      props.updateCurrentScore(clickedAlready);
     }
   }
 
@@ -139,6 +142,12 @@ export default function Game() {
   useEffect(() => {
     setGameButtons(renderLevel());
   }, [level]);
+
+  useEffect(() => {
+    if (props.scoreboard.currentScore > props.scoreboard.topScore) {
+      props.updateTopScore();
+    }
+  }, [props.scoreboard]);
 
   return (
     <div className="game-container">
