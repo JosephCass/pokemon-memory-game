@@ -44,23 +44,21 @@ export default function Game() {
     }
   }
 
-  function changeButtonOrder() {
-    setGameButtons(shuffleArray(gameButtons));
-  }
-
   function validateChoice(key) {
     let gameBtnArr = [];
     if (checkClickedAlready(key)) {
       handleLostGame();
     } else {
-      setGameButtons(
-        gameButtons.map((gameButton) => {
+      function updateButtons() {
+        let newArr = gameButtons.map((gameButton) => {
           return gameButton.key === key
             ? { ...gameButton, clicked: true }
             : { ...gameButton };
-        })
-      );
-      console.log(gameButtons);
+        });
+
+        setGameButtons(shuffleArray(newArr));
+      }
+      updateButtons();
     }
   }
 
