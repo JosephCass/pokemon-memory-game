@@ -1,16 +1,22 @@
 import { useRef, useState, useEffect } from "react";
 
 export default function Game(props) {
-  let [level, setLevel] = useState(0);
+  let [level, setLevel] = useState(5);
 
-  let [lostGame, setLostState] = useState(false);
+  let [gameOver, setGameState] = useState(false);
 
   let levelDifficulty = [4, 6, 8, 10, 12];
 
   let buttonContainer = useRef(null);
 
   function handleLostGame() {
-    setLostState(true);
+    setGameState(true);
+  }
+
+  function checkGameWon() {
+    if (level > 4) {
+      setGameState(true);
+    }
   }
 
   function shuffleArray(array) {
@@ -80,6 +86,12 @@ export default function Game(props) {
     return initialButtons;
   }
 
+  function resetGame() {
+    setGameState(false);
+    setLevel(0);
+    setGameButtons(renderLevel());
+  }
+
   const [gameButtons, setGameButtons] = useState(renderLevel());
 
   function renderGameBtns() {
@@ -136,11 +148,16 @@ export default function Game(props) {
     });
   }
   useEffect(() => {
-    checkLevelComplete();
+    if (!gameOver && level < 5) {
+      checkLevelComplete();
+    }
   }, [gameButtons]);
 
   useEffect(() => {
-    setGameButtons(renderLevel());
+    if (!gameOver && level < 5) {
+      setGameButtons(renderLevel());
+    }
+    checkGameWon();
   }, [level]);
 
   useEffect(() => {
@@ -151,7 +168,7 @@ export default function Game(props) {
 
   return (
     <div className="game-container">
-      {!lostGame && (
+      {!gameOver && (
         <div className="game-heading">
           <h3 className="game-level">{`Pick a pokemon! | Level: ${
             level + 1
@@ -162,12 +179,21 @@ export default function Game(props) {
         </div>
       )}
       <div className="game-logic">
-        {!lostGame ? (
+        {!gameOver ? (
           <div ref={buttonContainer} className="pokemon-btn-container">
             {renderGameBtns()}
           </div>
+        ) : level > 4 ? (
+          <div className="won-game-container">
+            <h2 className="won-game-title">You Won The Game!</h2>
+            <button onClick={resetGame} className="play-again-btn">
+              Winner
+            </button>
+          </div>
         ) : (
-          <button className="play-again-btn">Play Again</button>
+          <button onClick={resetGame} className="play-again-btn">
+            Play Again
+          </button>
         )}
       </div>
     </div>
