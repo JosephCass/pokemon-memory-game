@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 
 export default function Game(props) {
-  let [level, setLevel] = useState(5);
+  let [level, setLevel] = useState(0);
 
   let [gameOver, setGameState] = useState(false);
 
